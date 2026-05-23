@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Criando a conexão com o banco de dados do XAMPP (no caso, ele está apenas pegando as informações para que, se estiver tudo certo, o servidor consiga se conectar com o banco de dados)
 const connection = mysql.createConnection({
-  // Essa linha mostra as informações para que o servidor consiga se conectar com o banco de dados no MySQL do XAMPP, se as informações estiverem corretas no MySQL
+  // Essa linha mostra as informações para que o servidor consiga se conectar com o banco de dados no MySQL do XAMPP, se as informações estiverem corretas no MySQL.(E so o  gabarito das iformaçoes)
 
   host: "localhost", // Essa linha significa que o banco de dados está rodando localmente nessa própria máquina 
   user: "root",      // Esse é o nome do usuário do banco de dados que o XAMPP cria por padrão (que no caso é o "root")
