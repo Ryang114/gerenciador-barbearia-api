@@ -1,24 +1,30 @@
-//Importação que permite o node ter acesso a ferramentas capas de entender o  pacote express  
+// Importação que permite o Node ter acesso a ferramentas capazes de entender o pacote express  
 const express = require("express");
 
-// Importação que permite o node ter acesso as ferramnetas do mysl ou seja permite falar e enteder o mysql do xampp (ou seja se comunicar com o banco de dados) 
+// Importação que permite o Node ter acesso às ferramentas do MySQL, ou seja, permite falar e entender o MySQL do XAMPP (ou seja, se comunicar com o banco de dados) 
 const mysql = require("mysql2");
 
-// E o express ja executado 
+// É o Express já executado 
 const app = express();
 
-//E a porta onde sera executado o nosso projeto 
+// É a porta onde será executado o nosso projeto 
 const port = 3000;
 
-//Essa linha e a função do onde ele permite que o proprio express entenda os arquivos em formato json 
+// Essa linha é uma função onde ela permite que o próprio Express entenda os arquivos em formato JSON 
 app.use(express.json());
 
 
-//O express vai executuatar o servidor e vai redenrizar o arquivo a resposta que o servidor foi cirado com sucesso se o processo der certo 
-app.get("/", (request, response) => {
-  response.send("Tudo deu certo por aqui!<br><br>O servidor foi criado com sucesso!");
-});
+// Criando a conexão com o banco de dados do XAMPP (no caso, ele está apenas pegando as informações para que, se estiver tudo certo, o servidor consiga se conectar com o banco de dados)
+const connection = mysql.createConnection({
+  // Essa linha mostra as informações para que o servidor consiga se conectar com o banco de dados no MySQL do XAMPP, se as informações estiverem corretas no MySQL
 
+  host: "localhost", // Essa linha significa que o banco de dados está rodando localmente nessa própria máquina 
+  user: "root",      // Esse é o nome do usuário do banco de dados que o XAMPP cria por padrão (que no caso é o "root")
+  password: "",      // Essa é a senha do usuário do banco de dados que o XAMPP cria por padrão (ela é vazia, ou seja, sem senha)
+  database: "barbearia_db" // Esse é o nome do banco de dados que foi criado lá no MySQL do XAMPP, que no caso é (barbearia_db)
+
+  // O servidor do XAMPP (no caso, o Apache) e o banco de dados não estão ativos por padrão. Você tem que ir lá no painel de controle e dar "Start" nos dois para que o servidor Apache e o banco de dados MySQL rodem, para que a aplicação seja executada corretamente.
+});
 
 //O express vai ouvir/renderizar tudo que vir da porta 3000
 app.listen(port, () => {
