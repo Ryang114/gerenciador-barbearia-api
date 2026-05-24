@@ -34,6 +34,22 @@ connection.connect((erro) => {//Essa linha faz o node usar as informaçoes que f
   }
 });
 
+app.post("/salvar-produto", (req, res) => {//O express vai receber os dados que vierem da rota  salvar produtos e com isso com o req  cosigo visualizar(no terminal) e com o (res) reber a resposta dos dados apenas atraves do usuario no caso frontend que os dados que foram recebidos  atraves de uma notificação de pop-up no navegador do usuario depois que ele clicar em cadastrar 
+  const { nome, preco } = req.body;
+
+  const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)";
+
+  connection.query(sql, [nome, preco], (erro, resultado) => {
+
+    if (erro) {
+      console.error("Erro ao salvar o produto:", erro);
+      res.status(500).json({ error: "Erro ao salvar o produto" });
+    } else {
+      res.json({ message: "Produto salvo com sucesso!" });
+    }
+  });
+})
+
 //O express vai ouvir/renderizar tudo que vir da porta 3000
 app.listen(port, () => {
   //essa farse em baixo vai ser redenrizada no terminal do vs code
