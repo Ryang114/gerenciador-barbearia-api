@@ -35,7 +35,7 @@ connection.connect((erro) => {//Essa linha faz o node usar as informaçoes que f
 });
 
 app.post("/salvar-produto", (req, res) => {//O express vai receber os dados que vierem da rota  salvar produtos e com isso com o req  cosigo visualizar(no terminal) e com o (res) reber a resposta dos dados apenas atraves do usuario no caso frontend que os dados que foram recebidos  atraves de uma notificação de pop-up no navegador do usuario depois que ele clicar em cadastrar 
-  const { nome, preco } = req.body;
+  const { nome, preco } = req.body;// Vao ser ciradas duas constantes (nome e preço) onde irão receber os valores que seram digitados pelo usuario la  no formulario la do frontent ai irão p o servidor que no  caso e aqui no arquivo (sever.js e o node)
 
   const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)";
 
