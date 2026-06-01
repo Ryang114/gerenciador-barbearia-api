@@ -37,7 +37,8 @@ connection.connect((erro) => {//Essa linha faz o node usar as informaçoes que f
 app.post("/salvar-produto", (req, res) => {//O express vai receber os dados que vierem da rota  salvar produtos e com isso com o req  cosigo visualizar(no terminal) e com o (res) reber a resposta dos dados apenas atraves do usuario no caso frontend que os dados que foram recebidos  atraves de uma notificação de pop-up no navegador do usuario depois que ele clicar em cadastrar 
   const { nome, preco } = req.body;// Vao ser ciradas duas constantes (nome e preço) onde irão receber os valores que seram digitados pelo usuario la  no formulario la do frontent ai irão p o servidor que no  caso e aqui no arquivo (sever.js e o node)
 
-  const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)";
+  const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)";//Aqui ele cria o comando sql para enserir as variaveis que o usuario digitou no formulario do frontend no banco de dodos do my SQL e os potos de interrogação são são  os lugares onde  as variaveis noe e preco seriam enseridas e fazem o papel de trvas de segurça para o excluimento de tabelas ou dandos importantes 
+
 
   connection.query(sql, [nome, preco], (erro, resultado) => {
 
