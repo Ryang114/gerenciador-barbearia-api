@@ -39,8 +39,6 @@ app.post("/salvar-produto", (req, res) => { // O express vai receber os dados qu
 
 
   const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)"; // Significa que o servidor vai criar uma nova constante chamada sql que vai servir como o comando para inserir o nome e preço do produto no banco de dados do MySQL do XAMPP. Os pontos de interrogação (?) são usados como coordenadas para mostrar a vaga onde os valores do nome e do preço serão inseridos (tipo nome primeiro e depois preço). Eles também servem como uma medida de segurança para evitar SQL Injection (ou seja, evitar que um usuário malicioso tente apagar ou roubar todo o banco de dados).
-  const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)";//Aqui ele cria o comando sql para enserir as variaveis que o usuario digitou no formulario do frontend no banco de dodos do my SQL e os potos de interrogação são são  os lugares onde  as variaveis noe e preco seriam enseridas e fazem o papel de trvas de segurça para o excluimento de tabelas ou dandos importantes 
-
 
 
   // Ele vai usar o caminho criado pela const connection para adicionar um novo nome e preço no banco de dados quando eu colocar os dados lá no formulário do frontend e clicar em cadastrar. Os dados cadastrados (no caso nome e preco) vão ser enviados para o banco de dados do MySQL, e a função vai receber erro (por exemplo, se o XAMPP estiver desligado) ou, se não tiver nenhum erro, ele vai receber o resultado (que no caso significa que deu tudo certo).
