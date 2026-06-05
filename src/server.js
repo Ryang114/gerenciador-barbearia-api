@@ -53,6 +53,23 @@ app.post("/salvar-produto", (req, res) => { // O express vai receber os dados qu
   });
 })
 
+app.get("/salvar-agendamento", (req,res)=> {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
 // O express vai ouvir todas as requisições que vierem na porta 3000
 app.use(express.json());
 app.listen(port, () => {
