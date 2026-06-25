@@ -1,4 +1,5 @@
 // Importação que permite o Node ter acesso a ferramentas capazes de entender o pacote express  
+const e = require("express");
 const express = require("express");
 
 // Importação que permite o Node ter acesso às ferramentas do MySQL, ou seja, permite falar e entender o MySQL do XAMPP (ou seja, se comunicar com o banco de dados) 
@@ -12,7 +13,6 @@ const port = 3000;
 
 // Essa linha é uma função onde ela permite que o próprio Express entenda os arquivos em formato JSON 
 app.use(express.json());
-
 
 // Criando a conexão com o banco de dados do XAMPP (no caso, ele está apenas pegando as informações para que, se estiver tudo certo, o servidor consiga se conectar com o banco de dados)(Aqui ele só pega as informações)
 const connection = mysql.createConnection({
@@ -53,24 +53,23 @@ app.post("/salvar-produto", (req, res) => { // O express vai receber os dados qu
   });
 })
 
-app.get("/salvar-agendamento", (req,res)=> {
-  kdhfidsihlfhjofjdsk
+app.post("/salvar-agendamento", (req, res) => {
 
+  const { cliente, servico, data_hora, status } = req.body;
 
+  const sql = "INSERT INTO agendamentos (cliente, servico, data_hora, status) VALUES (?, ?, ?, ?)";
 
-
-
-
-
-
-
-
-
-
-
-
+  connection.query(sql, [cliente, servico, data_hora, status || 'agendado'], (erro, resultado) => {
+    if (erro) {
+      console.error("Erro em salvar o agendamento", erro);
+      res.status(500).json({ error: "Erro ao salvar o agendamento" });
+    } else {
+      res.json({ message: "Agendamento salvo com sucesso" });
+    }
+  });
 
 });
+
 // O express vai ouvir todas as requisições que vierem na porta 3000
 app.use(express.json());
 app.listen(port, () => {
