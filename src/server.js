@@ -53,7 +53,7 @@ app.post("/salvar-produto", (req, res) => { // O express vai receber os dados qu
   });
 })
 
-app.post("/salvar-agendamento", (req, res) => {k
+app.post("/salvar-agendamento", (req, res) => {// O express vai rreceber os dados que virem da rota /salvar agendamento.Com o (req) eu consigo visualizar e pegar os dados envisdos pelo usuario la no formulario forntend e com o res eu posso enviar uma resposta de volta p o frontend saber o que oconteceu.
 
   const { cliente, servico, data_hora, status } = req.body;
 
