@@ -55,9 +55,9 @@ app.post("/salvar-produto", (req, res) => { // O express vai receber os dados qu
 
 app.post("/salvar-agendamento", (req, res) => {// O express vai rreceber os dados que virem da rota /salvar agendamento.Com o (req) eu consigo visualizar e pegar os dados envisdos pelo usuario la no formulario forntend e com o res eu posso enviar uma resposta de volta p o frontend saber o que oconteceu.
 
-  const { cliente, servico, data_hora, status } = req.body;
+  const { cliente, servico, data_hora, status } = req.body;//Vão ser criadas quatro variaveis (cliente, servico,data_hora e status) onde irão receber os valores digitados pelo usuario la no formulario o frontend.ai eles virão para o servidor (que no caso é no arquvo server com o node).
 
-  const sql = "INSERT INTO agendamentos (cliente, servico, data_hora, status) VALUES (?, ?, ?, ?)";
+  const sql = "INSERT INTO agendamentos (cliente, servico, data_hora, status) VALUES (?, ?, ?, ?)";//Signica que o servidor vai criar uma nova contante chamada sql que vai servir como o comando geral p enserir os agendamendos no banco de dados do my SQL do xampp.Onde ele vai ensrir os valores na na ordem que foi digitada pelo usuario que no caso é cliente,serviço data_hora,status.Onde os pontos de interrogação(?) são usados como cooodenadas para mostrar a vagas dos valores que seaõ ensiridos(tipo cliente primeiro e depois seviço, data_hora e status).Eles tambem servem como mendida de segurança para evitar SQL Injection(ou seja envitar que o bbanco de dados seja apagado ou robado). 
 
   connection.query(sql, [cliente, servico, data_hora, status || 'agendado'], (erro, resultado) => {
     if (erro) {
