@@ -68,11 +68,9 @@ app.post("/salvar-agendamento", (req, res) => {// O Express vai receber os dados
   });
 
 }); 
-//Agora o proximo passo e fazer uma nova rota onde o usuario vai poder ver o proprio agendamento que ele cadastrou no xamp vou usar gt para fazer isso.
+//Agora o proximo passo e fazer uma nova rota onde o usuario vai poder ver o proprio agendamento que ele cadastrou no xamp vou usar get para fazer isso nome da rota /salvar-agendamentos 
 
-
-
-
+app.get ("/salvar-agendamentos", (req, res) => {
 
 
 
