@@ -67,7 +67,15 @@ app.post("/salvar-agendamento", (req, res) => {// O Express vai receber os dados
     }
   });
 
-});
+}); 
+//Agora o proximo passo e fazer uma nova rota onde o usuario vai poder ver o proprio agendamento que ele cadastrou no xamp
+
+
+
+
+
+
+
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
 app.listen(port, () => {
