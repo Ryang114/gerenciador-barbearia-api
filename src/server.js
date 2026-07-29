@@ -1,5 +1,4 @@
 // Importação que permite o Node ter acesso a ferramentas capazes de entender o pacote express  
-const e = require("express");
 const express = require("express");
 
 // Importação que permite o Node ter acesso às ferramentas do MySQL, ou seja, permite falar e entender o MySQL do XAMPP (ou seja, se comunicar com o banco de dados) 
@@ -26,7 +25,7 @@ const connection = mysql.createConnection({
   // O servidor do XAMPP (no caso, o Apache) e o banco de dados não estão ativos por padrão. Você tem que ir lá no painel de controle e dar "Start" nos dois para que o servidor Apache e o banco de dados MySQL rodem, para que a aplicação seja executada corretamente.
 });
 
-connection.connect((erro) => { // Essa linha faz o node usar as informações que foram passadas acima para ele tentar se conectar com o banco de dados. Mas se essa conexão receber um erro (ou seja, se uma das informações do crachá ou gabarito que estão lá em cima estiverem erradas), a função vai receber o erro.
+connection.connect((erro) => { // Essa linha faz o Node usar as informações que foram passadas acima para ele tentar se conectar com o banco de dados. Mas se essa conexão receber um erro (ou seja, se uma das informações do crachá ou gabarito que estão lá em cima estiverem erradas), a função vai receber o erro.
   if (erro) { // Se a função receber erro, ele vai mostrar a mensagem do console.error no terminal do VS Code 
     console.error("Erro ao conectar ao banco de dados:", erro);
   } else { // Se a função não receber erro, a conexão vai ser estabelecida com sucesso e vai mostrar a mensagem do console.log no terminal do VS Code 
@@ -53,25 +52,24 @@ app.post("/salvar-produto", (req, res) => { // O express vai receber os dados qu
   });
 })
 
-app.post("/salvar-agendamento", (req, res) => {// O express vai rreceber os dados que virem da rota /salvar agendamento.Com o (req) eu consigo visualizar e pegar os dados envisdos pelo usuario la no formulario forntend e com o res eu posso enviar uma resposta de volta p o frontend saber o que oconteceu.
+app.post("/salvar-agendamento", (req, res) => {// O Express vai receber os dados que vierem da rota /salvar-agendamento. Com o (req) eu consigo visualizar e pegar os dados enviados pelo usuário lá no formulário frontend e com o (res) eu posso enviar uma resposta de volta para o frontend saber o que aconteceu.
 
-  const { cliente, servico, data_hora, status } = req.body;//Vão ser criadas quatro variaveis (cliente, servico,data_hora e status) onde irão receber os valores digitados pelo usuario la no formulario o frontend.ai eles virão para o servidor (que no caso é no arquvo server com o node).
+  const { cliente, servico, data_hora, status } = req.body;// Vão ser criadas quatro variáveis (cliente, servico, data_hora e status) onde irão receber os valores digitados pelo usuário lá no formulário do frontend. Aí eles virão para o servidor (que no caso é no arquivo server com o Node).
 
-  const sql = "INSERT INTO agendamentos (cliente, servico, data_hora, status) VALUES (?, ?, ?, ?)";//Signica que o servidor vai criar uma nova contante chamada sql que vai servir como o comando geral p enserir os agendamendos no banco de dados do my SQL do xampp.Onde ele vai ensrir os valores na na ordem que foi digitada pelo usuario que no caso é cliente,serviço data_hora,status.Onde os pontos de interrogação(?) são usados como cooodenadas para mostrar a vagas dos valores que seaõ ensiridos(tipo cliente primeiro e depois seviço, data_hora e status).Eles tambem servem como mendida de segurança para evitar SQL Injection(ou seja envitar que o bbanco de dados seja apagado ou robado). 
+  const sql = "INSERT INTO agendamentos (cliente, servico, data_hora, status) VALUES (?, ?, ?, ?)";// Significa que o servidor vai criar uma nova constante chamada sql que vai servir como o comando geral para inserir os agendamentos no banco de dados do MySQL do XAMPP. Onde ele vai inserir os valores na ordem que foi digitada pelo usuário que no caso é cliente, serviço, data_hora, status. Onde os pontos de interrogação (?) são usados como coordenadas para mostrar as vagas dos valores que serão inseridos (tipo cliente primeiro e depois serviço, data_hora e status). Eles também servem como medida de segurança para evitar SQL Injection (ou seja, evitar que o banco de dados seja apagado ou roubado). 
 
-  connection.query(sql, [cliente, servico, data_hora, status || 'agendado'], (erro, resultado) => {
+  connection.query(sql, [cliente, servico, data_hora, status || 'agendado'], (erro, resultado) => {// Aqui ele vai usar um novo caminho pela const connection para adicionar um novo agendamento no banco de dados quando eu colocar os dados no formulário do frontend e clicar em cadastrar. Os dados cadastrados no caso (cliente, serviço, data_hora e status) vão ser enviados para o banco de dados no MySQL do XAMPP e se ocorrer algum erro no caso se o XAMPP estiver desligado aí no caso ele não vai conseguir fazer a consulta e a função vai receber erro ou se não tiver nenhum erro ele vai receber a mensagem se deu tudo certo. 
     if (erro) {
-      console.error("Erro em salvar o agendamento", erro);
-      res.status(500).json({ error: "Erro ao salvar o agendamento" });
+      console.error("Erro em salvar o agendamento", erro);// No caso ele vai indicar essa mensagem de erro no terminal do VS Code sendo que depois vai dar um detalhamento ou dica do erro. 
+      res.status(500).json({ error: "Erro ao salvar o agendamento" });// Aqui ele também vai indicar uma mensagem de erro só que essa mensagem de erro vai ser enviada para o frontend em formato JSON e vai ser exibida na tela do usuário com um pop-up avisando que deu erro.
     } else {
-      res.json({ message: "Agendamento salvo com sucesso" });
+      res.json({ message: "Agendamento salvo com sucesso" });// Aqui também ele vai mandar uma mensagem em formato JSON onde ela vai ser exibida na tela do usuário frontend com um pop-up avisando que o agendamento foi salvo com sucesso no banco de dados do MySQL do XAMPP.
     }
   });
 
 });
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
-app.use(express.json());
 app.listen(port, () => {
   // Essa frase embaixo vai ser renderizada no terminal do VS Code ao ligar o servidor
   console.log(`API da barbearia rodando em http://localhost:${port}`);
