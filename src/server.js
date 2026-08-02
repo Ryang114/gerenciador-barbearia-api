@@ -4,11 +4,17 @@ const express = require("express");
 // Importação que permite o Node ter acesso às ferramentas do MySQL, ou seja, permite falar e entender o MySQL do XAMPP (ou seja, se comunicar com o banco de dados) 
 const mysql = require("mysql2");
 
+// e uma importação que permite que o node tenha acesso a ferramenta cors que e uma ferramenta de segurança que faz com que o node e o bakend comunique com o frontend ja que eles estãndo em portas diferentes (o bakend esta na porta 3000 e o frontend eta na porta 5173).
+const cors = require("cors");
+
 // É o Express já executado 
 const app = express();
 
 // É a porta onde será executado o nosso projeto 
 const port = 3000;
+
+//Essa linha e uma função que permite o node e o express (que são o backend) terem acesso ao colors que e uma ferramenta que permite que o bakend se comunicarar com o frontend (que no caso e o rect) que estão em portas diferentes.
+app.use(cors());
 
 // Essa linha é uma função onde ela permite que o próprio Express entenda os arquivos em formato JSON 
 app.use(express.json());
