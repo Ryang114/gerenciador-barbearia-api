@@ -71,11 +71,19 @@ app.post("/salvar-agendamento", (req, res) => {// O Express vai receber os dados
 //Agora o proximo passo e fazer uma nova rota onde o usuario vai poder ver o proprio agendamento que ele cadastrou no xamp vou usar get para fazer isso nome da rota /salvar-agendamentos 
 
 app.get ("/exibir-agendamentos", (req, res) => {
-// Criar a const sql
+
+  const sql = "SELECT * fROM agendamentos";
+
+  connection.query(sql, (erro, resultado) => {
+    if(erro){
+      console.error("Erro ao exibir agendamentos porfavor verique se o xampp esta ligado", erro);
+      res.status(500).json({ error: "erro ao exibir agendamentos"})
+    } else {
+      console.log("agendamentos exibidos com sucesso");
+      res.json(resultado);
+    }
+  });
 });
-
-
-
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
 app.listen(port, () => {
