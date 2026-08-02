@@ -70,17 +70,17 @@ app.post("/salvar-agendamento", (req, res) => {// O Express vai receber os dados
 }); 
 //Agora o proximo passo e fazer uma nova rota onde o usuario vai poder ver o proprio agendamento que ele cadastrou no xamp vou usar get para fazer isso nome da rota /salvar-agendamentos 
 
-app.get ("/exibir-agendamentos", (req, res) => {
+app.get ("/exibir-agendamentos", (req, res) => { //Aqui o express vai receber os dados que vierem da rota /exibir-agendamentos.com o (req) eu consiogo visualizar os dados envidos pelo usuario la no frontend e com o (res) eu consigo eu consigo enviar uma resposta de volta p o frontend saber o que aconteceu. 
 
-  const sql = "SELECT * fROM agendamentos";
+  const sql = "SELECT * FROM agendamentos";//Aqui ele vai criar uma nova constante chamada sql onde vaão servir como comando segeral para exibir dodos os agendamentos que estão cadastrados no banco de dados do xampp.
 
-  connection.query(sql, (erro, resultado) => {
-    if(erro){
-      console.error("Erro ao exibir agendamentos porfavor verique se o xampp esta ligado", erro);
-      res.status(500).json({ error: "erro ao exibir agendamentos"})
-    } else {
-      console.log("agendamentos exibidos com sucesso");
-      res.json(resultado);
+  connection.query(sql, (erro, resultado) => {// Aqui o express vai consultar o banco de dados para exibir todos os agendamentos que estão cadastrados no banco de daddso de dados do xammp. e se ocreer algum erro no no caso se o xamp estiver desligado ai ele n vai conseguir fazer a consulta e a função vai receber erro se n tiver nelhum ele vai receber a menssagem avisando que deu tudo certo o (erro) serve para mostrar caso ocorra agum erro e o (resultado) serve para msotrar caso n ocorra nelhum erro. 
+    if(erro) {
+      console.error("Erro ao exibir agendamentos por favor verique se o xampp esta ligado", erro);// Se a função receber erro ele vai mostar a mensagem de erro no terminal do vs code e uma dica do erro por conta da varivel erro no final depois da virgula. 
+      res.status(500).json({ error: "erro ao exibir agendamentos"})//Aqui alem da mensssagem de erro no terminal do vs code ele vai mandar a mensagemn de erro para o frontend em formato JSON e vai nser exibida na tela do usuario com um pop-up avisando que deu erro em exibir os agendamentos.
+    }else{
+      console.log("agendamentos exibidos com sucesso");//Aqui ele vai mostrar cso n dere erro a mensgem  a mensagem no terminal do vs code avisando que os agendamentos foram exibidos com sucesso 
+      res.json({message:"Agendamentos exibidos com sucesso"});//Aqui ele vai mostrar a mensagem caso não der erro para o frontend em formato JSON e vai ser exibida na tela do usuario com um pop-up avisando que os agendamentos foram exibidos com sucesso.
     }
   });
 });
