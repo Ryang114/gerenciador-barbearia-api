@@ -1,50 +1,24 @@
 # Gerenciador de Barbearia - API
 
-API do projeto Gerenciador de Agendamentos de Barbearia.
+API do projeto **Gerenciador de Agendamentos de Barbearia**.
 
-## Objetivo
+Este back-end recebe pedidos do front-end, conversa com o banco de dados MySQL/MariaDB do XAMPP e devolve respostas em JSON.
 
-Criar o back-end responsavel por receber pedidos do site, aplicar regras de negocio e conversar com o banco de dados MySQL/MariaDB do XAMPP.
-
-## Stack
+## Tecnologias
 
 - Node.js
 - Express
-- MySQL/MariaDB via XAMPP
+- MySQL/MariaDB
+- XAMPP
+- mysql2
 - JavaScript
 
-## Como rodar
+## Como Rodar O Projeto
 
-Instale as dependencias:
+1. Abra o **XAMPP Control Panel**.
+2. Clique em **Start** no **MySQL**.
+3. Abra o terminal dentro da pasta `backend`.
+4. Instale as dependências:
 
 ```bash
 npm install
-```
-
-Inicie a API:
-
-```bash
-npm run dev
-```
-
-Abra no navegador:
-
-```txt
-http://localhost:3000
-```
-
-## Banco de dados local
-
-Use o XAMPP com o MySQL/MariaDB ligado.
-
-Banco usado no estudo:
-
-```txt
-barbearia_db
-```
-
-## Status
-
-- API inicial criada.
-- Express configurado.
-- Preparacao inicial para conexao com MySQL/MariaDB.
