@@ -80,7 +80,7 @@ app.get ("/exibir-agendamentos", (req, res) => { //Aqui o express vai receber os
       res.status(500).json({ error: "erro ao exibir agendamentos"})//Aqui alem da mensssagem de erro no terminal do vs code ele vai mandar a mensagemn de erro para o frontend em formato JSON e vai nser exibida na tela do usuario com um pop-up avisando que deu erro em exibir os agendamentos.
     }else{
       console.log("agendamentos exibidos com sucesso");//Aqui ele vai mostrar cso n dere erro a mensgem  a mensagem no terminal do vs code avisando que os agendamentos foram exibidos com sucesso 
-      res.json({message:"Agendamentos exibidos com sucesso"});//Aqui ele vai mostrar a mensagem caso não der erro para o frontend em formato JSON e vai ser exibida na tela do usuario com um pop-up avisando que os agendamentos foram exibidos com sucesso.
+      res.json({message:"Agendamentos exibidos com sucesso", agendamentos: resultado});//Aqui ele vai mostrar a mensagem caso não der erro para o frontend em formato JSON e vai ser exibida na tela do usuario com um pop-up avisando que os agendamentos foram exibidos com sucesso.
     }
   });
 });
