@@ -47,7 +47,7 @@ app.post("/cadastro", function (req, res) {
   if (!nome || !email || !telefone || !senha || !confirmarSenha) {
     console.error("Sever: todos os campos são obirgatorios");
     res.status(400).json({ mensagem: "Todos os caampos são obrigatorios" })
-    return;
+    return;k
   }
 
   if (senha !== confirmarSenha) {
