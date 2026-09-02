@@ -39,56 +39,33 @@ connection.connect((erro) => { // Essa linha faz o Node usar as informações qu
   }
 });
 
-app.post("/salvar-produto", (req, res) => { // O express vai receber os dados que vierem da rota /salvar-produto. Com o (req) eu consigo visualizar e pegar os dados enviados pelo usuário lá no formulário do frontend, e com o (res) eu consigo enviar uma resposta de volta para o frontend saber o que aconteceu.
-  const { nome, preco } = req.body; // Vão ser criadas duas constantes (nome e preco) onde irão receber os valores que serão digitados pelo usuário lá no formulário do frontend. Aí eles virão para o servidor (que no caso é aqui no arquivo server.js com o Node).
+//Rota de cadastro 
+app.post("/cadastro", function (req, res) {
+  const { nome, email, telefone, senha, confirmarSenha } = req.body
 
+  //Confirma se se todoas os capos forma prechidos se n retorna erro e n deixa o cadastro ser feito 
+  if (!nome || !email || !telefone || !senha || !confirmarSenha) {
+    console.error("Sever: todos os campos são obirgatorios");
+    res.status(400).json({ mensagem: "Todos os caampos são obrigatorios" })
+    return;
+  }
 
-  const sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)"; // Significa que o servidor vai criar uma nova constante chamada sql que vai servir como o comando para inserir o nome e preço do produto no banco de dados do MySQL do XAMPP. Os pontos de interrogação (?) são usados como coordenadas para mostrar a vaga onde os valores do nome e do preço serão inseridos (tipo nome primeiro e depois preço). Eles também servem como uma medida de segurança para evitar SQL Injection (ou seja, evitar que um usuário malicioso tente apagar ou roubar todo o banco de dados).
+  if (senha !== confirmarSenha) {
+    console.log("As senhas não são iguais");
+    res.status(400).json({ mensagem: "As senhas não são iquais" });
+    return;
+  }
+  const sqlVerificarEmail = "SELECT * FROM usuarios WHERE email = ?";
 
-
-  // Ele vai usar o caminho criado pela const connection para adicionar um novo nome e preço no banco de dados quando eu colocar os dados lá no formulário do frontend e clicar em cadastrar. Os dados cadastrados (no caso nome e preco) vão ser enviados para o banco de dados do MySQL, e a função vai receber erro (por exemplo, se o XAMPP estiver desligado) ou, se não tiver nenhum erro, ele vai receber o resultado (que no caso significa que deu tudo certo).
-  connection.query(sql, [nome, preco], (erro, resultado) => {
-
-    if (erro) { // Se a função receber erro, ele vai mostrar a mensagem de erro detalhada no terminal do VS Code para o programador descobrir o problema.
-      console.error("Erro ao salvar o produto:", erro); // Essa seria a mensagem de erro que seria exibida no terminal caso a função receba erro.
-      res.status(500).json({ error: "Erro ao salvar o produto" }); // Essa linha envia uma resposta com o status 500 (Erro Interno do Servidor) e o texto do erro em formato JSON. Ela serve apenas para avisar o Frontend que a operação falhou, para que o Frontend sim exiba uma notificação de pop-up na tela para o usuário com essa mensagem.
-    } else {
-      res.json({ message: "Produto salvo com sucesso!" }); // Essa linha é a resposta de sucesso que o backend vai mandar em formato JSON caso não receba erro. Por padrão, ela já envia o status 200 (que indica sucesso). O Frontend vai receber esse pacote e poderá exibir um pop-up avisando ao usuário que o produto passou pelo servidor e foi salvo com sucesso no banco de dados.
-    }
-  });
-})
-
-app.post("/salvar-agendamento", (req, res) => {// O Express vai receber os dados que vierem da rota /salvar-agendamento. Com o (req) eu consigo visualizar e pegar os dados enviados pelo usuário lá no formulário frontend e com o (res) eu posso enviar uma resposta de volta para o frontend saber o que aconteceu.
-
-  const { cliente, servico, data_hora, status } = req.body;// Vão ser criadas quatro variáveis (cliente, servico, data_hora e status) onde irão receber os valores digitados pelo usuário lá no formulário do frontend. Aí eles virão para o servidor (que no caso é no arquivo server com o Node).
-
-  const sql = "INSERT INTO agendamentos (cliente, servico, data_hora, status) VALUES (?, ?, ?, ?)";// Significa que o servidor vai criar uma nova constante chamada sql que vai servir como o comando geral para inserir os agendamentos no banco de dados do MySQL do XAMPP. Onde ele vai inserir os valores na ordem que foi digitada pelo usuário que no caso é cliente, serviço, data_hora, status. Onde os pontos de interrogação (?) são usados como coordenadas para mostrar as vagas dos valores que serão inseridos (tipo cliente primeiro e depois serviço, data_hora e status). Eles também servem como medida de segurança para evitar SQL Injection (ou seja, evitar que o banco de dados seja apagado ou roubado). 
-
-  connection.query(sql, [cliente, servico, data_hora, status || 'agendado'], (erro, resultado) => {// Aqui ele vai usar um novo caminho pela const connection para adicionar um novo agendamento no banco de dados quando eu colocar os dados no formulário do frontend e clicar em cadastrar. Os dados cadastrados no caso (cliente, serviço, data_hora e status) vão ser enviados para o banco de dados no MySQL do XAMPP e se ocorrer algum erro no caso se o XAMPP estiver desligado aí no caso ele não vai conseguir fazer a consulta e a função vai receber erro ou se não tiver nenhum erro ele vai receber a mensagem se deu tudo certo. 
+  connection.query(sqlVerificarEmail, [email], function (erro, resultado) {
     if (erro) {
-      console.error("Erro em salvar o agendamento", erro);// No caso ele vai indicar essa mensagem de erro no terminal do VS Code sendo que depois vai dar um detalhamento ou dica do erro. 
-      res.status(500).json({ error: "Erro ao salvar o agendamento" });// Aqui ele também vai indicar uma mensagem de erro só que essa mensagem de erro vai ser enviada para o frontend em formato JSON e vai ser exibida na tela do usuário com um pop-up avisando que deu erro.
-    } else {
-      res.json({ message: "Agendamento salvo com sucesso" });// Aqui também ele vai mandar uma mensagem em formato JSON onde ela vai ser exibida na tela do usuário frontend com um pop-up avisando que o agendamento foi salvo com sucesso no banco de dados do MySQL do XAMPP.
+      console.error("Erro ao verificar o email:", erro);
+      resultado.status(500).json({ mensagem: "Erro ao verifcar o email" });
+      return;
     }
+
   });
 
-}); 
-//Agora o proximo passo e fazer uma nova rota onde o usuario vai poder ver o proprio agendamento que ele cadastrou no xamp vou usar get para fazer isso nome da rota /salvar-agendamentos 
-
-app.get ("/exibir-agendamentos", (req, res) => { //Aqui o express vai receber os dados que vierem da rota /exibir-agendamentos.com o (req) eu consiogo visualizar os dados envidos pelo usuario la no frontend e com o (res) eu consigo eu consigo enviar uma resposta de volta p o frontend saber o que aconteceu. 
-
-  const sql = "SELECT * FROM agendamentos";//Aqui ele vai criar uma nova constante chamada sql onde vaão servir como comando segeral para exibir dodos os agendamentos que estão cadastrados no banco de dados do xampp.
-
-  connection.query(sql, (erro, resultado) => {// Aqui o express vai consultar o banco de dados para exibir todos os agendamentos que estão cadastrados no banco de daddso de dados do xammp. e se ocreer algum erro no no caso se o xamp estiver desligado ai ele n vai conseguir fazer a consulta e a função vai receber erro se n tiver nelhum ele vai receber a menssagem avisando que deu tudo certo o (erro) serve para mostrar caso ocorra agum erro e o (resultado) serve para msotrar caso n ocorra nelhum erro. 
-    if(erro) {
-      console.error("Erro ao exibir agendamentos por favor verique se o xampp esta ligado", erro);// Se a função receber erro ele vai mostar a mensagem de erro no terminal do vs code e uma dica do erro por conta da varivel erro no final depois da virgula. 
-      res.status(500).json({ error: "erro ao exibir agendamentos"})//Aqui alem da mensssagem de erro no terminal do vs code ele vai mandar a mensagemn de erro para o frontend em formato JSON e vai nser exibida na tela do usuario com um pop-up avisando que deu erro em exibir os agendamentos.
-    }else{
-      console.log("agendamentos exibidos com sucesso");//Aqui ele vai mostrar cso n dere erro a mensgem  a mensagem no terminal do vs code avisando que os agendamentos foram exibidos com sucesso 
-      res.json({message:"Agendamentos exibidos com sucesso", agendamentos: resultado});//Aqui ele vai mostrar a mensagem caso não der erro para o frontend em formato JSON e vai ser exibida na tela do usuario com um pop-up avisando que os agendamentos foram exibidos com sucesso.
-    }
-  });
 });
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
