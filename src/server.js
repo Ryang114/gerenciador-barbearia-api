@@ -47,7 +47,7 @@ app.post("/cadastro", function (req, res) {
   if (!nome || !email || !telefone || !senha || !confirmarSenha) {
     console.error("Sever: todos os campos são obirgatorios");
     res.status(400).json({ mensagem: "Todos os caampos são obrigatorios" })
-    return;k
+    return;
   }
 
   if (senha !== confirmarSenha) {
@@ -60,12 +60,26 @@ app.post("/cadastro", function (req, res) {
   connection.query(sqlVerificarEmail, [email], function (erro, resultado) {
     if (erro) {
       console.error("Erro ao verificar o email:", erro);
-      resultado.status(500).json({ mensagem: "Erro ao verifcar o email" });
+      res.status(500).json({ mensagem: "Erro ao verifcar o email" });
       return;
     }
+    if (resultado.length > 0) {
+      res.status(400).json({ mensagem: "esse email ja esta cadastrado" });
+      return;
+    }
+    const sqlInserirUsuario = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (?,?,?,?)";
 
+    connection.query(sqlInserirUsuario, [nome, email, telefone, senha], function (erro, resultado) {
+      if (erro) {
+        console.error("Erro em cadastrar o usuario:", erro);
+        res.status(500).json({ mensagem: "Erro ao cadastrar usuario" });
+        return;
+      }
+      console.log("Usuario cadastrado com sucesso");
+      res.status(201).json({ mensagem: "usuario cadastrado com sucesso id gerado com sucesso", idUsuario: resultado.insertId });
+      return;
+    });
   });
-
 });
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
