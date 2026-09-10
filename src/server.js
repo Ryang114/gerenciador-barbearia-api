@@ -40,7 +40,7 @@ connection.connect((erro) => { // Essa linha faz o Node usar as informações qu
 });
 
 //Rota de cadastro 
-app.post("/cadastro", function (req, res) {
+app.post("/cadastro", function (req, res) {k
   const { nome, email, telefone, senha, confirmarSenha } = req.body
 
   //Confirma se se todoas os capos forma prechidos se n retorna erro e n deixa o cadastro ser feito 
