@@ -40,10 +40,13 @@ connection.connect((erro) => { // Essa linha faz o Node usar as informações qu
 });
 
 //Rota de cadastro 
+//Aqui eu estou cirando a rota de cadastro onde ele ele vai receber os dados do usuario que virem do frontend e vai fazer a a validação desses dados de acordo com as regras que eu cirei e depois ele ele vai mandar esses dados par o banco de dados se todas as regras forem atendidas e usuario cadastrado vai para o banco de dados.
 app.post("/cadastro", function (req, res) {k
-  const { nome, email, telefone, senha, confirmarSenha } = req.body
+  //Essas variveis são as informaçoes que o usuario vai pegar do front e vai mandar para o beck para que os dados sejam sejam validaddos conforme as regras que eu criei e e depois essas informaçoes vaão p o bamco de dados.
+  const { nome, email, telefone, senha, confirmarSenha } = req.body;
 
-  //Confirma se se todoas os capos forma prechidos se n retorna erro e n deixa o cadastro ser feito 
+  //Regras
+  //1 REGRA: Se agum dos campos nome , email, telefone e confirme senha estiver vazio, ele vai  retornar erro tanto no servidor quanto no frontend e n vai deixar o cadastro seguir.
   if (!nome || !email || !telefone || !senha || !confirmarSenha) {
     console.error("Sever: todos os campos são obirgatorios");
     res.status(400).json({ mensagem: "Todos os caampos são obrigatorios" })
