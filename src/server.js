@@ -52,20 +52,23 @@ app.post("/cadastro", function (req, res) {k
     res.status(400).json({ mensagem: "Todos os caampos são obrigatorios" })
     return;
   }
-
+  //REGRA 2: Se a senha e a confirmação de senha forem diferentes, ele vai retornar erro no servidor e no frontend e on vai deixar o cadastro seguir 
   if (senha !== confirmarSenha) {
     console.log("As senhas não são iguais");
     res.status(400).json({ mensagem: "As senhas não são iquais" });
     return;
   }
+  //Aqui vai começar e regra 3 mas nessa linha estou criandop uma nova variavel que vai ser usada meio que para verificarse o email do usuario ja exite no banco de dados my sql do xampp (esta apenas quardando o comando na variavel).
   const sqlVerificarEmail = "SELECT * FROM usuarios WHERE email = ?";
-
+ //Aqui ele vai ele vai fazer a veriaficação do email em si onde ele verifica se o emil da variavel esta esta no banco de dados sql.
   connection.query(sqlVerificarEmail, [email], function (erro, resultado) {
+    //Aqui e a REGRA3 onde ele vai verificar se o emeil do usuario ja esta cadastrado no banco de dados my sql se o emeil ja estiver cadastrado ele vaui retornar erro tanto no terminal quanto no frontend e n vai deuixar o cadastro seguir 
     if (erro) {
       console.error("Erro ao verificar o email:", erro);
       res.status(500).json({ mensagem: "Erro ao verifcar o email" });
       return;
     }
+     
     if (resultado.length > 0) {
       res.status(400).json({ mensagem: "esse email ja esta cadastrado" });
       return;
