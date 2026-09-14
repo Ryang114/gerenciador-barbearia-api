@@ -4,7 +4,7 @@ const express = require("express");
 // Importação que permite o Node ter acesso às ferramentas do MySQL, ou seja, permite falar e entender o MySQL do XAMPP (ou seja, se comunicar com o banco de dados) 
 const mysql = require("mysql2");
 
-// e uma importação que permite que o node tenha acesso a ferramenta cors que e uma ferramenta de segurança que faz com que o node e o bakend comunique com o frontend ja que eles estãndo em portas diferentes (o bakend esta na porta 3000 e o frontend eta na porta 5173).
+// É uma importação que permite que o node tenha acesso a ferramenta cors que é uma ferramenta de segurança que faz com que o node e o backend se comuniquem com o frontend já que eles estão em portas diferentes (o backend está na porta 3000 e o frontend está na porta 5173).
 const cors = require("cors");
 
 // É o Express já executado 
@@ -13,7 +13,7 @@ const app = express();
 // É a porta onde será executado o nosso projeto 
 const port = 3000;
 
-//Essa linha e uma função que permite o node e o express (que são o backend) terem acesso ao colors que e uma ferramenta que permite que o bakend se comunicarar com o frontend (que no caso e o rect) que estão em portas diferentes.
+// Essa linha é uma função que permite o node e o express (que são o backend) terem acesso ao cors que é uma ferramenta que permite o backend se comunicar com o frontend (que no caso é o react) que estão em portas diferentes.
 app.use(cors());
 
 // Essa linha é uma função onde ela permite que o próprio Express entenda os arquivos em formato JSON 
@@ -40,47 +40,51 @@ connection.connect((erro) => { // Essa linha faz o Node usar as informações qu
 });
 
 //Rota de cadastro 
-//Aqui eu estou cirando a rota de cadastro onde ele ele vai receber os dados do usuario que virem do frontend e vai fazer a a validação desses dados de acordo com as regras que eu cirei e depois ele ele vai mandar esses dados par o banco de dados se todas as regras forem atendidas e usuario cadastrado vai para o banco de dados.
-app.post("/cadastro", function (req, res) {k
-  //Essas variveis são as informaçoes que o usuario vai pegar do front e vai mandar para o beck para que os dados sejam sejam validaddos conforme as regras que eu criei e e depois essas informaçoes vaão p o bamco de dados.
+//Aqui eu estou criando a rota de cadastro onde ele vai receber os dados do usuário que vierem do frontend e vai fazer a validação desses dados de acordo com as regras que eu criei e depois ele vai mandar esses dados para o banco de dados se todas as regras forem atendidas e o usuário cadastrado vai para o banco de dados.
+app.post("/cadastro", function (req, res) {
+  //Essas variáveis são as informações que o usuário vai pegar do front e vai mandar para o back para que os dados sejam validados conforme as regras que eu criei e depois essas informações vão para o banco de dados.
   const { nome, email, telefone, senha, confirmarSenha } = req.body;
 
   //Regras
-  //1 REGRA: Se agum dos campos nome , email, telefone e confirme senha estiver vazio, ele vai  retornar erro tanto no servidor quanto no frontend e n vai deixar o cadastro seguir.
+  //1 REGRA: Se algum dos campos nome, email, telefone e confirmar senha estiver vazio, ele vai retornar erro tanto no servidor quanto no frontend e não vai deixar o cadastro seguir.
   if (!nome || !email || !telefone || !senha || !confirmarSenha) {
-    console.error("Sever: todos os campos são obirgatorios");
-    res.status(400).json({ mensagem: "Todos os caampos são obrigatorios" })
+    console.error("Server: todos os campos são obrigatórios");
+    res.status(400).json({ mensagem: "Todos os campos são obrigatórios" });
     return;
   }
-  //REGRA 2: Se a senha e a confirmação de senha forem diferentes, ele vai retornar erro no servidor e no frontend e on vai deixar o cadastro seguir 
+  //REGRA 2: Se a senha e a confirmação de senha forem diferentes, ele vai retornar erro no servidor e no frontend e não vai deixar o cadastro seguir 
   if (senha !== confirmarSenha) {
     console.log("As senhas não são iguais");
-    res.status(400).json({ mensagem: "As senhas não são iquais" });
+    res.status(400).json({ mensagem: "As senhas não são iguais" });
     return;
   }
-  //Aqui vai começar e regra 3 mas nessa linha estou criandop uma nova variavel que vai ser usada meio que para verificarse o email do usuario ja exite no banco de dados my sql do xampp (esta apenas quardando o comando na variavel).
+  //Aqui vai começar a regra 3 mas nessa linha estou criando uma nova variável que vai ser usada meio que para verificar se o email do usuário já existe no banco de dados mysql do xampp (está apenas guardando o comando na variável).
   const sqlVerificarEmail = "SELECT * FROM usuarios WHERE email = ?";
- //Aqui ele vai ele vai fazer a veriaficação do email em si onde ele verifica se o emil da variavel esta esta no banco de dados sql.
+  //Aqui ele vai fazer a verificação do email em si onde ele verifica se o email da variável está no banco de dados sql.
   connection.query(sqlVerificarEmail, [email], function (erro, resultado) {
-    //Aqui e a REGRA3 onde ele vai verificar se o emeil do usuario ja esta cadastrado no banco de dados my sql se o emeil ja estiver cadastrado ele vaui retornar erro tanto no terminal quanto no frontend e n vai deuixar o cadastro seguir 
+    //Aqui é a REGRA 3 em si onde ele vai verificar se o email do usuário já está cadastrado no banco de dados mysql se o email já estiver cadastrado ele vai retornar erro tanto no terminal quanto no frontend e não vai deixar o cadastro seguir 
     if (erro) {
       console.error("Erro ao verificar o email:", erro);
-      res.status(500).json({ mensagem: "Erro ao verifcar o email" });
+      res.status(500).json({ mensagem: "Erro ao verificar o email" });
       return;
     }
-     
+
+    //Aqui é a parte 2 da REGRA 3 onde ele vai verificar se o email do usuário já está cadastrado no banco de dados se o email já estiver cadastrado vai retornar erro tanto no terminal quanto no frontend e não vai deixar o cadastro seguir o email ele não pode existir então ele não teria que ser igual a 0 porque ele não existe
     if (resultado.length > 0) {
       res.status(400).json({ mensagem: "esse email ja esta cadastrado" });
       return;
     }
+    //Aqui começa a REGRA 4 onde nós vamos criar uma nova variável que vai ser usada para guardar as variáveis que vão ser inseridas pelo usuário no frontend e vão ser enviadas para o banco de dados.
     const sqlInserirUsuario = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (?,?,?,?)";
 
+    //Aqui está a consulta em si onde ele vai conferir se as variáveis inseridas no banco de dados enviadas com todas as regras anteriores estiverem corretas se não ela vai retornar erro tanto no terminal quanto no front e não vai deixar o cadastro seguir 
     connection.query(sqlInserirUsuario, [nome, email, telefone, senha], function (erro, resultado) {
       if (erro) {
         console.error("Erro em cadastrar o usuario:", erro);
         res.status(500).json({ mensagem: "Erro ao cadastrar usuario" });
         return;
       }
+      //Aqui é se der tudo certo ele vai retornar a mensagem de sucesso tanto no terminal quanto no frontend e vai mostrar que o id do usuário foi gerado com sucesso
       console.log("Usuario cadastrado com sucesso");
       res.status(201).json({ mensagem: "usuario cadastrado com sucesso id gerado com sucesso", idUsuario: resultado.insertId });
       return;
