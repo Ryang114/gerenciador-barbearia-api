@@ -40,6 +40,7 @@ connection.connect((erro) => { // Essa linha faz o Node usar as informações qu
 });
 
 //Rota de cadastro 
+
 //Aqui eu estou criando a rota de cadastro onde ele vai receber os dados do usuário que vierem do frontend e vai fazer a validação desses dados de acordo com as regras que eu criei e depois ele vai mandar esses dados para o banco de dados se todas as regras forem atendidas e o usuário cadastrado vai para o banco de dados.
 app.post("/cadastro", function (req, res) {
   //Essas variáveis são as informações que o usuário vai pegar do front e vai mandar para o back para que os dados sejam validados conforme as regras que eu criei e depois essas informações vão para o banco de dados.
@@ -90,6 +91,28 @@ app.post("/cadastro", function (req, res) {
       return;
     });
   });
+});
+//ROTA DE LOGIN (POST /login)
+app.post("/login", function (req, res) {
+  // Passo 1: Receber os dados (email e senha) enviados pelo frontend no corpo da requisição (req.body).
+  const { email, senha } = req.body;
+  // Passo 2: Validar se os campos obrigatórios foram preenchidos (se email ou senha estão vazios). Se faltar algum, retorna erro 400.
+  if (!email || !senha) {
+    console.error("Todos os campos devm estar preechidos");
+    res.status(400).json({ message: "Todos os campos devem estar preenchidos" });
+    return;
+  }
+  
+
+  // Passo 3: Buscar o usuário no banco de dados MySQL pelo e-mail (SELECT * FROM usuarios WHERE email = ?).
+  // - Se o banco der erro, retorna 500.
+  // - Se o e-mail NÃO for encontrado (resultado.length === 0), retorna erro 401 ("E-mail ou senha incorretos").
+
+  // Passo 4: Se o e-mail existir, comparar a senha digitada com a senha salva no banco (resultado[0].senha).
+  // - Se as senhas forem diferentes, retorna erro 401 ("E-mail ou senha incorretos").
+  // - Se as senhas forem iguais, retorna status 200 (Sucesso!) e envia os dados do usuário para o frontend logar.
+
+
 });
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
