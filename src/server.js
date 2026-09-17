@@ -92,6 +92,7 @@ app.post("/cadastro", function (req, res) {
     });
   });
 });
+
 //ROTA DE LOGIN (POST /login)
 app.post("/login", function (req, res) {
   // Passo 1: Receber os dados (email e senha) enviados pelo frontend no corpo da requisição (req.body).
@@ -99,20 +100,49 @@ app.post("/login", function (req, res) {
   // Passo 2: Validar se os campos obrigatórios foram preenchidos (se email ou senha estão vazios). Se faltar algum, retorna erro 400.
   if (!email || !senha) {
     console.error("Todos os campos devm estar preechidos");
-    res.status(400).json({ message: "Todos os campos devem estar preenchidos" });
+    res.status(400).json({ mensagem: "Todos os campos devem estar preenchidos" });
     return;
   }
-  
 
   // Passo 3: Buscar o usuário no banco de dados MySQL pelo e-mail (SELECT * FROM usuarios WHERE email = ?).
+  //Ele vai buscar o usaurio aqui pelo email 
+  const BuscarEmailExistenteSQL = "SELECT * FROM usuarios WHERE email = ?";
+
   // - Se o banco der erro, retorna 500.
-  // - Se o e-mail NÃO for encontrado (resultado.length === 0), retorna erro 401 ("E-mail ou senha incorretos").
+  connection.query(BuscarEmailExistenteSQL, [email], function (erro, resultado) {
+    if (erro) {
+      console.error("Erro em encontrar usuario no banco de dados", erro);
+      res.status(500).json({ mensagem: "Erro em encontrar usaurio no banco de dados " });
+      return;
+    }
+    // - Se o e-mail NÃO for encontrado (resultado.length === 0), retorna erro 401 ("E-mail ou senha incorretos").
+    if (resultado.length === 0) {
+      console.log("Email não encontrado");
+      res.status(401).json({ mensagem: "Email ou senha icorretos" });
+      return;
+    }
+    // Passo 4: Se o e-mail existir, comparar a senha digitada com a senha salva no banco (resultado[0].senha)
+    const usuarioEncontrado = resultado[0];
 
-  // Passo 4: Se o e-mail existir, comparar a senha digitada com a senha salva no banco (resultado[0].senha).
-  // - Se as senhas forem diferentes, retorna erro 401 ("E-mail ou senha incorretos").
-  // - Se as senhas forem iguais, retorna status 200 (Sucesso!) e envia os dados do usuário para o frontend logar.
+    // - Se as senhas forem diferentes, retorna erro 401 ("E-mail ou senha incorretos"). 
+    if (usuarioEncontrado.senha !== senha) {
+      console.log("A senha esta incorreta");
+      res.status(401).json({ mensagem: "Email ou senha icorretos" });
+      return;
+    }
 
+    // - Se as senhas forem iguais, retorna status 200 (Sucesso!) e envia os dados do usuário para o frontend logar.
 
+    console.log("O usuario fez o login com sucesso");
+    res.status(200).json({
+      mensagem: "login feito com sucesso!", 
+      usuario: {
+        id: usuarioEncontrado.id,
+        nome: usuarioEncontrado.nome,
+        email: usuarioEncontrado.email
+      }
+    });
+  });
 });
 
 // O express vai ouvir todas as requisições que vierem na porta 3000
