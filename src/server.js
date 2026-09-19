@@ -75,7 +75,7 @@ app.post("/cadastro", function (req, res) {
       res.status(400).json({ mensagem: "esse email ja esta cadastrado" });
       return;
     }
-    //Aqui começa a REGRA 4 onde nós vamos criar uma nova variável que vai ser usada para guardar as variáveis que vão ser inseridas pelo usuário no frontend e vão ser enviadas para o banco de dados.
+    //Aqui começa a REGRA 4 onde nós vamos criar uma nova variável que vai ser usada para guardar as variáveis que vão ser inseridas pelo usuário no frontend vão p o backend vão ser enviadas para o banco de dados.
     const sqlInserirUsuario = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (?,?,?,?)";
 
     //Aqui está a consulta em si onde ele vai conferir se as variáveis inseridas no banco de dados enviadas com todas as regras anteriores estiverem corretas se não ela vai retornar erro tanto no terminal quanto no front e não vai deixar o cadastro seguir 
@@ -94,10 +94,15 @@ app.post("/cadastro", function (req, res) {
 });
 
 //ROTA DE LOGIN (POST /login)
+//Aqui e a função da rota login mesmo onde ele tem a funçao de receber os dados que vão ser digitados no frontend  
 app.post("/login", function (req, res) {
   // Passo 1: Receber os dados (email e senha) enviados pelo frontend no corpo da requisição (req.body).
-  const { email, senha } = req.body;
+
+  const { email, senha } = req.body;//Aqui são as informaçoes ( os campos) onde o usaurio vai digitar no forntend e vai enviar para backend 
+
   // Passo 2: Validar se os campos obrigatórios foram preenchidos (se email ou senha estão vazios). Se faltar algum, retorna erro 400.
+
+  //Essa e uma regra que eu fiz para quew os dois capos precisam estar prechidos para que o beckend consiga buscar o usuario cadastrado depois que o usauri clicar no botão 
   if (!email || !senha) {
     console.error("Todos os campos devm estar preechidos");
     res.status(400).json({ mensagem: "Todos os campos devem estar preenchidos" });
@@ -106,16 +111,26 @@ app.post("/login", function (req, res) {
 
   // Passo 3: Buscar o usuário no banco de dados MySQL pelo e-mail (SELECT * FROM usuarios WHERE email = ?).
   //Ele vai buscar o usaurio aqui pelo email 
+
+
+  //Aqui eu criei uma const para busacar o usaurio ja cadastrado no bacoo de dados pelo email ja cadastrado por ele pelo banco de dados e o ponto de interrrogação (?) cerve para evitar o qualquer ataque atraves do my sql injection
   const BuscarEmailExistenteSQL = "SELECT * FROM usuarios WHERE email = ?";
 
   // - Se o banco der erro, retorna 500.
+
+  //Aqui o bakend vai fazer uma consulta ao banco de dados atrabves da constante buscar email exitente SQL procurando na constante email o email mas se o banco de dados apresentar alguma falha ou n tiver fucionando o usario ja cadastrado n vai poder logar na sua conta ou seja não vai poder efetuar login 
   connection.query(BuscarEmailExistenteSQL, [email], function (erro, resultado) {
     if (erro) {
       console.error("Erro em encontrar usuario no banco de dados", erro);
       res.status(500).json({ mensagem: "Erro em encontrar usaurio no banco de dados " });
       return;
     }
+    //Dessa ponto em diante começam as regras de validação dos inpuits para que os dadso do usaurio sejam validados
+    
+    
     // - Se o e-mail NÃO for encontrado (resultado.length === 0), retorna erro 401 ("E-mail ou senha incorretos").
+
+    //Essa aqui eu coquei para que se o imail procurado pelo usuario pela busca no banco n exitir vai aparcer para o usauriop email ou senha n encontrado 
     if (resultado.length === 0) {
       console.log("Email não encontrado");
       res.status(401).json({ mensagem: "Email ou senha icorretos" });
@@ -135,7 +150,7 @@ app.post("/login", function (req, res) {
 
     console.log("O usuario fez o login com sucesso");
     res.status(200).json({
-      mensagem: "login feito com sucesso!", 
+      mensagem: "login feito com sucesso!",
       usuario: {
         id: usuarioEncontrado.id,
         nome: usuarioEncontrado.nome,
