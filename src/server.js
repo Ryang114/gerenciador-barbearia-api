@@ -137,7 +137,14 @@ app.post("/login", function (req, res) {
       return;
     }
     // Passo 4: Se o e-mail existir, comparar a senha digitada com a senha salva no banco (resultado[0].senha)
+
+    // Aqui eu criei uma nova variavel chamada usuario enicotrado onde ela tem a função de com base no comparar a senha dugitada no frontend pelo usaurio com a senha salva no banco de dados com base no email salvo no banco de dados e quardar o primeor intem da lista de acordo com o banco de dados 
+     
     const usuarioEncontrado = resultado[0];
+
+    //Desse ponto em diante são as regras que eu coloquei para filtrar as situaçoes  
+
+    //REGRA 1 - Se a senha salva no banco de dados for diferente da senha digitada pelo usuario no frontend vai retornar a mensagem pa o usuario email ou senha incorretos
 
     // - Se as senhas forem diferentes, retorna erro 401 ("E-mail ou senha incorretos"). 
     if (usuarioEncontrado.senha !== senha) {
@@ -147,7 +154,7 @@ app.post("/login", function (req, res) {
     }
 
     // - Se as senhas forem iguais, retorna status 200 (Sucesso!) e envia os dados do usuário para o frontend logar.
-
+    // Já se as senhas forem iquais vai retornar a mensagem para o usuario o usuario fez o login com sucesso 
     console.log("O usuario fez o login com sucesso");
     res.status(200).json({
       mensagem: "login feito com sucesso!",
